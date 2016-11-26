@@ -1,3 +1,14 @@
 <div>
-    This is rest list page
+    <h2>Restaurant List {{restaurant}}</h2>
+    <hr>
+    <div ng-repeat="restaurant in restaurants">
+        <div>
+            <div>
+                <a ng-href="" ><h3>{{restaurant.name}}</h3></a>
+                <div class="pull-right">{{restaurant.phone}}</div>
+            </div>
+            <div>{{restaurant.address}}</div>
+            <div ng-repeat="cuisine in restaurant.cuisines">{{cuisine}}</div>
+        </div>
+    </div>
 </div>

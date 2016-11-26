@@ -1,3 +1,23 @@
-<div>
-    This is rest info page
+<div class="col-sm-11">
+    <div class="col-sm-11">
+        <h2>{{restaurant.name}}</h2>
+        <ul>
+           <li ng-repeat="foodItem in foodItems">
+               <div>
+                   <div>{{foodItem.name}}
+                       <div>{{foodItem.price}}</div>
+                       <div class="input-group">
+                           <input type="text" class="form-control" placeholder="0">
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Add</button>
+                          </span>
+                       </div>
+                   </div>
+               </div>
+           </li>
+        </ul>
+    </div>
+    <div class="col-sm-2  col-sm-offset-2 ">
+        <button class="btn btn-default " type="button">Check Out</button>
+    </div>
 </div>
