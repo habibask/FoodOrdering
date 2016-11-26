@@ -12,6 +12,7 @@ app.controller('FoodApplicationController', ['$scope', '$http', function ($scope
     console.log("in controller")
      $http.get('http://localhost:8080/users/hello')
          .success(function(response){
-             $scope.test = response;
+                console.log("result")
+                 $scope.test = response;
          })
 }]);

@@ -18,7 +18,7 @@ public class CustomerRestService {
     public Response getDefaultCustomerInJSON() {
         System.out.println("In here");
         //CustomerService service = new CustomerService();
-        return Response.ok("Test", MediaType.TEXT_PLAIN)
+        return Response.ok("this is a test result", MediaType.TEXT_PLAIN)
                 .header("Access-control-Allow-Origin","*")
                 .build();
 
