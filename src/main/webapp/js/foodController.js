@@ -1,8 +1,18 @@
 app.controller('FoodApplicationController', ['$scope', '$http', function ($scope, $http) {
     console.log("in controller")
-     $http.get('http://localhost:8080/users/hello')
+
+     $scope.input = {};
+     $scope.Login = function(){
+
+         console.log($scope.input);
+         $http.post('http://localhost:8080/foodapp/login',$scope.input)
          .success(function(response){
-                console.log("result")
-                 $scope.test = response;
+            console.log(response)
+            $scope.message = response.name;
          })
+         .error(function(err){
+            console.log(err);
+         });
+     }
+
 }]);

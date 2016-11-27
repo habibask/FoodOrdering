@@ -10,7 +10,6 @@ INSERT into Customer VALUES(6,'Chaitanya Kaul', '32-C, Jonathan Way, Boston', 'c
 INSERT into Customer VALUES(7,'Deepak Sharma', '56C, Jonathan Way, Boston', 'deepak@cc.com','pass@1ee','1235888');
 
 
-
 INSERT into Restaurant VALUES(1,'Desi Restaurant', 'ABC bull street Boston', 'desi@cc.com','pass@1','123');
 INSERT into Restaurant VALUES(2,'Boston Shawarma', 'Brodley Street, Boston', 'bostonss@cc.com','pass@2','1234');
 INSERT into Restaurant VALUES(3,'Chutneys', 'Symphony street, Boston', 'chutneys@cc.com','pass@134','123sd5');
