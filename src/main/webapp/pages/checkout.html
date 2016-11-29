@@ -1,3 +1,26 @@
+<div class="alert alert-success" ng-show="checkoutMessage" role="alert">{{checkoutMessage}}</div>
+<div class="alert alert-error" ng-show="checkoutErrorMessage" role="alert">{{checkoutErrorMessage}}</div>
 <div>
-    This is checkout page
+    <div>
+        <h2 class="col-sm-12">{{currentRest.name}}</h2>
+        <ul class="col-sm-12 list-group">
+            <li ng-repeat="foodItem in currentRest.menuItems" ng-if="foodItem.quantity!==0" class="row list-group-item">
+                <div class="col-sm-9">
+                    <div><h4>{{foodItem.name}}</h4></div>
+                    <div><h6>{{foodItem.descr}}</h6></div>
+                </div>
+                <div class="col-sm-3">
+                    {{foodItem.quantity}} x {{foodItem.cost}} = {{foodItem.quantity * foodItem.cost|number:2}}
+                </div>
+
+            </li>
+        </ul>
+    </div>
+    <div class="col-sm-4  col-sm-offset-8 ">
+        <h2>Order total {{orderTotal|number:2}}
+        </h2>
+    </div>
+</div>
+<div class="col-sm-2  col-sm-offset-10 ">
+    <button class="btn btn-default " type="button" ng-click="submitOrder()">Submit Order</button>
 </div>

@@ -1,9 +1,9 @@
 <div>
     <div>
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Enter Restaurant Name">
+            <input type="text" class="form-control" ng-model="inputRestaurant" placeholder="Enter Restaurant Name">
             <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Search!</button>
+        <button class="btn btn-default" type="button" ng-click="search(inputRestaurant)">Search!</button>
       </span>
         </div>
     </div>

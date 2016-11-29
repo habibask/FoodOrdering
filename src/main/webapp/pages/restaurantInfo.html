@@ -1,23 +1,26 @@
-<div class="col-sm-11">
-    <div class="col-sm-11">
-        <h2>{{restaurant.name}}</h2>
-        <ul>
-           <li ng-repeat="foodItem in foodItems">
-               <div>
-                   <div>{{foodItem.name}}
-                       <div>{{foodItem.price}}</div>
-                       <div class="input-group">
-                           <input type="text" class="form-control" placeholder="0">
-                          <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">Add</button>
-                          </span>
-                       </div>
+<div>
+    <div>
+        <h2 class="col-sm-12">{{currentRest.name}}</h2>
+        <ul class="col-sm-12 list-group">
+           <li ng-repeat="foodItem in currentRest.menuItems" class="row list-group-item">
+                   <div class="col-sm-9">
+                       <div><h4>{{foodItem.name}}</h4></div>
+                       <div><h6>{{foodItem.descr}}</h6></div>
                    </div>
-               </div>
+                   <div class="col-sm-1">
+                       {{foodItem.cost}}
+                   </div>
+                   <div class="col-sm-2 input-group">
+                       <input type="number" class="form-control" placeholder="{{foodItem.quantity}}" ng-model="inputQ">
+                       <span class="input-group-btn">
+                         <button class="btn btn-default" type="button" ng-click="updateCart($index,inputQ)">Add</button>
+                       </span>
+                   </div>
            </li>
         </ul>
     </div>
-    <div class="col-sm-2  col-sm-offset-2 ">
-        <button class="btn btn-default " type="button">Check Out</button>
-    </div>
+
+</div>
+<div class="col-sm-2  col-sm-offset-10 ">
+    <button class="btn btn-default " type="button" ng-click="checkOut()">Check Out</button>
 </div>

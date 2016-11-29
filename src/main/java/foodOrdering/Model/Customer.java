@@ -1,12 +1,10 @@
-package foodOrdering.domain;
-
-import org.glassfish.jersey.internal.inject.Custom;
+package foodOrdering.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Customer {
-
+    private int id;
     private String name;
     private String address;
     private String email;
@@ -17,12 +15,21 @@ public class Customer {
 //        super();
     }
 
-    public Customer(String name, String address, String email, String password, String phone) {
+    public Customer(int id, String name, String address, String email, String password, String phone) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.email = email;
         this.password = password;
         this.phone = phone;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getAddress() {
