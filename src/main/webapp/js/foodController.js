@@ -3,15 +3,26 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
      $scope.currentUser = {};
      $scope.restaurants = [];
      $scope.currentRest = {};
+     $scope.userType;
      //$scope.history = [];
 
-     $scope.input = {};
-     $scope.Login = function(){
-         $http.post('http://localhost:8080/foodapp/login',$scope.input)
+     $scope.statuses = ['Received','Processing', 'Complete']
+     $scope.cuisines = ['CHINESE', 'INDIAN', 'THAI', 'ITALIAN', 'MEXICAN' ,'AMERICAN']
+
+     $scope.Login = function(input){
+         var url = ''
+         console.log(input.restaurant)
+         if(!input.restaurant)
+            url = 'http://localhost:8080/foodapp/custlogin'
+         else
+            url = 'http://localhost:8080/foodapp/restlogin'
+
+         $http.post(url, input)
          .success(function(response){
             console.log(response)
             if(response){
                 $scope.currentUser = response;
+                $scope.userType = input.restaurant?'restaurant':'customer'
                 $location.url("/search");
             }else{
                 $scope.message = "Username/password do not match";
@@ -85,7 +96,7 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
           .success(function(response){
              if(response==="success"){
                  console.log(response)
-                 $scope.currentUser.history.push(order);
+                 $scope.currentUser.orders.push(order);
                  $location.url("/history");
                  $scope.checkoutMessage = "Order successfully placed";
              }else{
@@ -93,5 +104,50 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
              }
           });
      }
+
+     $scope.updateStatus = function(idx){
+        console.log("In updateStatus "+$scope.currentUser.orders[idx].status);
+        $http.post('http://localhost:8080/foodapp/updateorder',$scope.currentUser.orders[idx])
+         .success(function(response){
+            if(response==="success"){
+                $scope.updateStatus = true;
+            }else{
+                $scope.updateStatus = false;
+            }
+         });
+     }
+
+     $scope.editItem = function(item){
+        console.log(item)
+        $scope.input = item
+
+     }
+
+     $scope.update = function(item){
+        console.log("Adding new Item")
+        $http.post('http://localhost:8080/foodapp/updateitem?rest='+$scope.currentUser.id,item)
+          .success(function(response){
+             if(response==="success"){
+                 $scope.input = {};
+                 $scope.updateStatus = "Successful update";
+             }else{
+                 $scope.updateStatus = "Error updating";
+             }
+          });
+     }
+
+     $scope.add = function(item){
+         $http.post('http://localhost:8080/foodapp/additem?rest='+$scope.currentUser.id,item)
+           .success(function(response){
+              if(response!=null){
+                  console.log(response)
+                  $scope.currentUser.menuItems.push(response);
+                  $scope.updateStatus = "Successful add";
+                  $scope.input = {};
+              }else{
+                  $scope.updateStatus = "Error adding";
+              }
+           });
+      }
 
 }]);

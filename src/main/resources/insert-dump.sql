@@ -27,17 +27,6 @@ INSERT into MenuItem VALUES(6, 'Plain Dosa', 2, 'Plain Dosa served with sambar')
 INSERT into MenuItem VALUES(7, 'Naan Pizza', 2, 'THis is a pizza which is made out of naan bread');
 INSERT into MenuItem VALUES(8, 'Taco', 5, 'This is a taco');
 
-
-INSERT into Restaurant VALUES(1,'Desi Restaurant', 'ABC bull street Boston', 'desi@cc.com','pass@1','123');
-INSERT into Restaurant VALUES(2,'Boston Shawarma', 'Brodley Street, Boston', 'bostonss@cc.com','pass@2','1234');
-INSERT into Restaurant VALUES(3,'Chutneys', 'Symphony street, Boston', 'chutneys@cc.com','pass@134','123sd5');
-INSERT into Restaurant VALUES(4,'Desi Buffet House', '66F Labour Way, Boston', 'labourhouse@cc.com','pass@22','123');
-INSERT into Restaurant VALUES(5,'Dominos Pizza', '44 Roxburry Crossing', 'domnios@cc.com','pass@14','12355');
-INSERT into Restaurant VALUES(6,'Halal Restaurant', '32sdC, Jonathan Way, Boston', 'halalres@cc.com','pass@1345','1233');
-INSERT into Restaurant VALUES(7,'Popeyes', '66, Jonathan Way, Boston', 'popeyes@cc.com','pass@1ee','1235888');
-
-
-
 INSERT into Menu VALUES(1, 1, 20.55);
 INSERT into Menu VALUES(5, 2, 12.50);
 INSERT into Menu VALUES(7, 3, 8.55);
@@ -46,3 +35,4 @@ INSERT into Menu VALUES(1, 5, 20.55);
 INSERT into MENU VALUES(1, 6, 12.00);
 INSERT into Menu VALUES(3, 7, 16.55);
 INSERT into Menu VALUES(4, 8, 14.00);
+insert into Menu Values(1,8,5.00);

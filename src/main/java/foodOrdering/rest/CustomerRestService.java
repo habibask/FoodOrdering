@@ -3,6 +3,7 @@ package foodOrdering.rest;
 import foodOrdering.database.CreateStatements;
 import foodOrdering.database.MakeConnection;
 import foodOrdering.model.Customer;
+import foodOrdering.model.MenuItem;
 import foodOrdering.model.Order;
 import foodOrdering.model.Restaurant;
 import org.json.JSONObject;
@@ -21,16 +22,30 @@ public class CustomerRestService {
     private HashMap<Integer, Restaurant> restMap = null;
 
     @POST
-    @Path("login")
+    @Path("custlogin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Customer checkLogin(Customer customer) {
         try {
-            System.out.println("In login method");
-            return CreateStatements.getUserAccount(MakeConnection.getConnection(), customer);//, MediaType.APPLICATION_JSON);
+            System.out.println("In customer login method");
+            return CreateStatements.getCustomerAccount(MakeConnection.getConnection(), customer);//, MediaType.APPLICATION_JSON);
         } catch (Exception e) {
             e.printStackTrace();
             return null; //makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+        }
+    }
+
+    @POST
+    @Path("restlogin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Restaurant checkRestLogin(Customer customer) {
+        try {
+            System.out.println("In rest login method");
+            return CreateStatements.getRestaurantAccount(MakeConnection.getConnection(), customer);//, MediaType.APPLICATION_JSON);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -46,6 +61,50 @@ public class CustomerRestService {
         } catch (Exception e) {
             e.printStackTrace();
             return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+        }
+    }
+
+    @POST
+    @Path("updateorder")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response updateOrder(Order order) {
+        try {
+            System.out.println("In updateOrder method");
+            CreateStatements.updateOrder(MakeConnection.getConnection(), order);
+            return makeResponse("success", MediaType.TEXT_PLAIN);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+        }
+    }
+
+    @POST
+    @Path("updateitem")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response updateItem(@QueryParam("rest") String rest, MenuItem item) {
+        try {
+            System.out.println("In updateItem method");
+            CreateStatements.updateItem(MakeConnection.getConnection(), rest, item);
+            return makeResponse("success", MediaType.TEXT_PLAIN);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+        }
+    }
+
+    @POST
+    @Path("additem")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public MenuItem addItem(@QueryParam("rest") String rest, MenuItem item) {
+        try {
+            System.out.println("In addItem method");
+            return CreateStatements.addItem(MakeConnection.getConnection(), rest, item);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

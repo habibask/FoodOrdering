@@ -4,6 +4,7 @@ import foodOrdering.model.Customer;
 import foodOrdering.model.MenuItem;
 import foodOrdering.model.Order;
 import foodOrdering.model.Restaurant;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,62 +14,105 @@ import java.util.HashMap;
 
 public class CreateStatements {
 
-    public static Customer getUserAccount(Connection conn, Customer customerToCheck) throws Exception {
-        PreparedStatement stmt = conn.prepareStatement("select name,address,email,password,phone,id from Customer where email=? and password=?");
+    public static Customer getCustomerAccount(Connection conn, Customer customerToCheck) throws Exception {
+        PreparedStatement stmt = conn.prepareStatement("select id,name,address,email,phone from Customer where email=? and password=?");
+        ResultSet rset = null;
         try {
             stmt.setString(1, customerToCheck.getEmail());
             stmt.setString(2, customerToCheck.getPassword());
-            ResultSet rset = stmt.executeQuery();
+            rset = stmt.executeQuery();
             if (rset.next()) {
-                Customer c = new Customer(rset.getInt(6), rset.getString(1), rset.getString(2), rset.getString(3), rset.getString(4), rset.getString(5));
-                ArrayList<Order> orders = new ArrayList<Order>();
-                PreparedStatement stmt2 = conn.prepareStatement("select o.id,r.id,r.name,o.time,o.totalCost,mi.id,mi.name,mi.type,oi.quantity,oi.cost " +
-                        "from orders o, orderitem oi, menuitem mi, restaurant r " +
-                        "where o.id = oi.orderNumber and mi.id = oi.menuItem " +
-                        "and r.id = o.orderedFrom " +
-                        "and o.orderedBy = ? order by o.id,mi.name;", ResultSet.TYPE_SCROLL_INSENSITIVE);
-                try {
-                    stmt2.setInt(1, rset.getInt(6));
-                    ResultSet rset2 = stmt2.executeQuery();
-                    Order o;
-                    int orderId = 0;
-                    ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
-                    while (rset2.next()) {
-                        if (orderId != rset2.getInt(1) && orderId != 0) {
-                            rset2.previous();
-                            o = new Order(rset2.getInt(1), rset.getInt(6), rset2.getInt(2), rset2.getDouble(5));
-                            o.setTime(rset2.getTimestamp(4));
-                            o.setFoodItems(menuItems.toArray(new MenuItem[menuItems.size()]));
-                            o.setRestaurantName(rset2.getString(3));
-                            orders.add(o);
-                            menuItems.clear();
-                            rset2.next();
-                        }
-                        menuItems.add(new MenuItem(rset2.getInt(6), rset2.getString(7), rset2.getString(8), rset2.getInt(9), rset2.getDouble(10)));
-                        orderId = rset2.getInt(1);
-                    }
-                    if(!menuItems.isEmpty()){
-                        rset2.previous();
-                        o = new Order(rset2.getInt(1), rset.getInt(6), rset2.getInt(2), rset2.getDouble(5));
-                        o.setTime(rset2.getTimestamp(4));
-                        o.setFoodItems(menuItems.toArray(new MenuItem[menuItems.size()]));
-                        o.setRestaurantName(rset2.getString(3));
-                        orders.add(o);
-                    }
-
-                } finally {
-                    stmt2.close();
-                }
-                c.setHistory(orders.toArray(new Order[orders.size()]));
-                System.out.println("Customer created");
+                Customer c = new Customer(rset.getInt(1), rset.getString(2), rset.getString(3), rset.getString(4), rset.getString(5));
+                ArrayList<Order> orders = getOrders(conn, rset.getInt(1), "customer");
+                c.setOrders(orders.toArray(new Order[orders.size()]));
                 return c;
             }
 
         } finally {
+            rset.close();
             stmt.close();
         }
 
         return null;
+    }
+
+    public static Restaurant getRestaurantAccount(Connection conn, Customer customerToCheck) throws Exception {
+        PreparedStatement stmt = conn.prepareStatement("select id,name,address,email,password,phone,id from Restaurant where email=? and password=?");
+        ResultSet rset = null;
+        try {
+            stmt.setString(1, customerToCheck.getEmail());
+            stmt.setString(2, customerToCheck.getPassword());
+            rset = stmt.executeQuery();
+            if (rset.next()) {
+                Restaurant c = new Restaurant(rset.getInt(1), rset.getString(2), rset.getString(3), rset.getString(4), rset.getString(5));
+                ArrayList<Order> orders = getOrders(conn, rset.getInt(1), "restaurant");
+                c.setOrders(orders.toArray(new Order[orders.size()]));
+                c.setMenuItems(getRestaurantList(conn,rset.getString(2)).get(rset.getInt(1)).getMenuItems());
+                return c;
+            }
+
+        } finally {
+//            rset.close();
+            stmt.close();
+        }
+
+        return null;
+    }
+
+    public static ArrayList<Order> getOrders(Connection conn, int id, String table) throws Exception {
+        ArrayList<Order> orders = new ArrayList<Order>();
+        PreparedStatement stmt2 = null;
+        ResultSet rset2 = null;
+        if (table.equalsIgnoreCase("customer"))
+            stmt2 = conn.prepareStatement("select o.id,c.id,c.name,r.id,r.name,o.time,o.totalCost,mi.id,mi.name,mi.type,oi.quantity,oi.cost,o.status " +
+                    "from orders o, orderitem oi, menuitem mi, customer c, restaurant r " +
+                    "where o.id = oi.orderNumber and mi.id = oi.menuItem " +
+                    "and r.id = o.orderedFrom and c.id = o.orderedBy " +
+                    "and o.orderedBy = ? order by o.id,mi.name;", ResultSet.TYPE_SCROLL_INSENSITIVE);
+        else
+            stmt2 = conn.prepareStatement("select o.id,c.id,c.name,r.id,r.name,o.time,o.totalCost,mi.id,mi.name,mi.type,oi.quantity,oi.cost,o.status " +
+                    "from orders o, orderitem oi, menuitem mi, customer c, restaurant r " +
+                    "where o.id = oi.orderNumber and mi.id = oi.menuItem " +
+                    "and c.id = o.orderedBy and r.id = o.orderedFrom " +
+                    "and o.orderedFrom = ? order by o.id,mi.name;", ResultSet.TYPE_SCROLL_INSENSITIVE);
+        try {
+            stmt2.setInt(1, id);
+            rset2 = stmt2.executeQuery();
+            Order o;
+            int orderId = 0;
+            ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
+            while (rset2.next()) {
+                if (orderId != rset2.getInt(1) && orderId != 0) {
+                    rset2.previous();
+                    o = new Order(rset2.getInt(1), rset2.getInt(2), rset2.getInt(4), rset2.getDouble(7));
+                    o.setCustomerName(rset2.getString(3));
+                    o.setRestaurantName(rset2.getString(5));
+                    o.setTime(rset2.getTimestamp(6));
+                    o.setFoodItems(menuItems.toArray(new MenuItem[menuItems.size()]));
+                    o.setStatus(rset2.getString(13));
+                    orders.add(o);
+                    menuItems.clear();
+                    rset2.next();
+                }
+                menuItems.add(new MenuItem(rset2.getInt(8), rset2.getString(9), rset2.getString(10), rset2.getInt(11), rset2.getDouble(12)));
+                orderId = rset2.getInt(1);
+            }
+            if (!menuItems.isEmpty()) {
+                rset2.previous();
+                o = new Order(rset2.getInt(1), rset2.getInt(2), rset2.getInt(4), rset2.getDouble(7));
+                o.setCustomerName(rset2.getString(3));
+                o.setRestaurantName(rset2.getString(5));
+                o.setTime(rset2.getTimestamp(6));
+                o.setFoodItems(menuItems.toArray(new MenuItem[menuItems.size()]));
+                o.setStatus(rset2.getString(13));
+                orders.add(o);
+            }
+
+        } finally {
+//            rset2.close();
+            stmt2.close();
+        }
+        return orders;
     }
 
     public static HashMap<Integer, Restaurant> getRestaurantList(Connection conn, String filter) throws Exception {
@@ -112,14 +156,15 @@ public class CreateStatements {
         System.out.println(o.getFoodItems().length);
         System.out.println(o.getTotalCost());
 
-        PreparedStatement stmt = conn.prepareStatement("insert into orders (orderedby, orderedfrom,time, totalCost)" +
-                " values (?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt = conn.prepareStatement("insert into orders (orderedby, orderedfrom, time, totalCost, status)" +
+                " values (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         PreparedStatement stmt2 = conn.prepareStatement("insert into OrderItem values (?,?,?,?)");
         try {
             stmt.setInt(1, o.getCustomerId());
             stmt.setInt(2, o.getRestaurantId());
             stmt.setTimestamp(3, new java.sql.Timestamp(new java.util.Date().getTime()));
             stmt.setDouble(4, o.getTotalCost());
+            stmt.setString(5, "Received");
             System.out.println(stmt.toString());
             int success = stmt.executeUpdate();
             System.out.println(success);
@@ -144,5 +189,73 @@ public class CreateStatements {
             stmt2.close();
             stmt.close();
         }
+    }
+
+    public static void updateOrder(Connection conn, Order o) throws Exception {
+        System.out.println("In updateOrder" + o.toString());
+        PreparedStatement stmt = conn.prepareStatement("update orders set status = ? where id = ?");
+        try {
+            stmt.setString(1, o.getStatus());
+            stmt.setInt(2, o.getId());
+            System.out.println(stmt.toString());
+            int success = stmt.executeUpdate();
+            System.out.println(success);
+        } finally {
+            stmt.close();
+        }
+    }
+
+    public static void updateItem(Connection conn, String rest, MenuItem mi) throws Exception{
+        System.out.println("In updateItem" + mi.getCost()+" - "+mi.getName());
+        PreparedStatement stmt1 = conn.prepareStatement("update MenuItem set name = ?, type=?, description=? where id = ?");
+        PreparedStatement stmt2 = conn.prepareStatement("update Menu set cost = ? where restaurantId = ? and menuitem = ?");
+        try {
+            stmt1.setString(1, mi.getName());
+            stmt1.setString(2, mi.getCuisine());
+            stmt1.setString(3, mi.getDescr());
+            stmt1.setInt(4, mi.getId());
+            System.out.println(stmt1.toString());
+            int success = stmt1.executeUpdate();
+            System.out.println(success);
+            stmt2.setDouble(1,mi.getCost());
+            stmt2.setInt(2,Integer.parseInt(rest));
+            stmt2.setInt(3, mi.getId());
+            System.out.println(stmt2.toString());
+            success = stmt2.executeUpdate();
+            System.out.println(success);
+        } finally {
+            stmt1.close();
+            stmt2.close();
+        }
+    }
+
+    public static MenuItem addItem(Connection conn, String rest, MenuItem mi) throws Exception{
+        System.out.println("In addItem" + mi.getCost()+" - "+mi.getName());
+        PreparedStatement stmt1 = conn.prepareStatement("Insert into MenuItem (name,type,description) values(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt2 = conn.prepareStatement("Insert into Menu (cost, restaurantId, menuitem) values(?,?,?)");
+        try {
+            stmt1.setString(1, mi.getName());
+            stmt1.setString(2, mi.getCuisine());
+            stmt1.setString(3, mi.getDescr());
+            System.out.println(stmt1.toString());
+            int success = stmt1.executeUpdate();
+            ResultSet rs = stmt1.getGeneratedKeys();
+            if (rs.next()) {
+                int key = rs.getInt(1);
+                System.out.println(success);
+                stmt2.setDouble(1, mi.getCost());
+                stmt2.setInt(2, Integer.parseInt(rest));
+                stmt2.setInt(3, key);
+                mi.setId(key);
+                System.out.println(stmt2.toString());
+                success = stmt2.executeUpdate();
+                System.out.println(success);
+                return mi;
+            }
+        } finally {
+            stmt1.close();
+            stmt2.close();
+        }
+        return null;
     }
 }

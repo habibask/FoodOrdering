@@ -5,12 +5,13 @@ import java.sql.Timestamp;
 public class Order {
     private int id;
     private int customerId;
+    private String customerName;
     private int restaurantId;
     private String restaurantName;
     private MenuItem[] foodItems;
     private double totalCost;
     private Timestamp time;
-
+    private String status;
     Order(){
 
     }
@@ -70,11 +71,27 @@ public class Order {
         this.restaurantName = restaurantName;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public Timestamp getTime() {
         return time;
     }
 
     public void setTime(Timestamp time) {
         this.time = time;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

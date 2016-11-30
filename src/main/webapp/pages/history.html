@@ -1,11 +1,25 @@
-<div class="panel panel-default" ng-repeat="order in currentUser.history|orderBy:'-time'">
-    <div class="panel-heading"><h3>{{order.restaurantName}} - {{order.totalCost|number:2}}</h3> {{ order.time|date:'MM/dd/yyyy HH:mm'}}</div>
+<div class="panel panel-default" ng-repeat="order in currentUser.orders|orderBy:'-time'">
+    <div class="">
+        <div class="col-sm-9">
+            <h3>{{userType=='restaurant'?order.customerName:order.restaurantName}} -
+                {{order.totalCost|number:2}}</h3>
+            <h6>{{ order.time|date:'MM/dd/yyyy HH:mm'}}</h6>
+        </div>
+        <div  class="dropdown col-sm-3" style="margin-top:30px">
+            <select ng-show="userType=='restaurant'" data-ng-options="status for status in statuses"  ng-change="updateStatus($index)" data-ng-model="order.status"></select>
+            <h4 ng-show="userType=='customer'">Status: {{order.status}}</h4>
+        </div>
+    </div>
     <table class="table table-hover table-condensed" style="text-align:center">
         <thead style="font-weight:bold">
-            <td>Item</td><td>Price</td><td>Quantity</td>
+        <td>Item</td>
+        <td>Price</td>
+        <td>Quantity</td>
         </thead>
         <tr ng-repeat="foodItem in order.foodItems">
-            <td>{{foodItem.name}}</td><td>{{foodItem.cost}}</td><td>{{foodItem.quantity}}</td>
+            <td>{{foodItem.name}}</td>
+            <td>{{foodItem.cost}}</td>
+            <td>{{foodItem.quantity}}</td>
         </tr>
     </table>
 </div>

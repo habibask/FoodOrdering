@@ -1,7 +1,7 @@
 use FoodOrdering;
 
 create table Customer (
-	id int primary key,
+	id int primary key AUTO_INCREMENT,
     name varchar(200) not null,
 	address varchar(500) not null,
 	email varchar(200) not null unique,
@@ -10,7 +10,7 @@ create table Customer (
 );
 
 create table Restaurant (
-	id int primary key,
+	id int primary key AUTO_INCREMENT,
     name varchar(200) not null,
 	address varchar(500) not null,
 	email varchar(200) not null unique,
@@ -27,12 +27,13 @@ create table Orders(
     foreign key(orderedFrom) references Restaurant(id)
        on update cascade on delete cascade,
 	time Timestamp,
-	totalCost double not null
+	totalCost double not null,
+    status enum('Received','Processing','Complete')
 );
 
 
 create table Reviews(
-	id int primary key,
+	id int primary key AUTO_INCREMENT,
     ratedBy int not null,
     foreign key(ratedBy) references Customer(id)
        on update cascade on delete cascade,
@@ -44,7 +45,7 @@ create table Reviews(
 );
 
 create table MenuItem(
-	id int primary key,
+	id int primary key AUTO_INCREMENT,
     name varchar(200) not null,
     type enum('CHINESE', 'INDIAN', 'THAI', 'ITALIAN', 'MEXICAN' ,'AMERICAN'),
     description varchar(500)

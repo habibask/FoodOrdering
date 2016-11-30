@@ -10,18 +10,17 @@ public class Customer {
     private String email;
     private String password;
     private String phone;
-    private Order[] history;
+    private Order[] orders;
 
     Customer(){
 //        super();
     }
 
-    public Customer(int id, String name, String address, String email, String password, String phone) {
+    public Customer(int id, String name, String address, String email, String phone) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.email = email;
-        this.password = password;
         this.phone = phone;
     }
 
@@ -73,11 +72,11 @@ public class Customer {
         this.password = password;
     }
 
-    public Order[] getHistory() {
-        return history;
+    public Order[] getOrders() {
+        return orders;
     }
 
-    public void setHistory(Order[] history) {
-        this.history = history;
+    public void setOrders(Order[] orders) {
+        this.orders = orders;
     }
 }
