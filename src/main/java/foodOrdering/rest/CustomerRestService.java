@@ -24,12 +24,13 @@ public class CustomerRestService {
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response checkLogin(Customer customer) {
+    public Customer checkLogin(Customer customer) {
         try {
             System.out.println("In login method");
-            return makeResponse(CreateStatements.getUserAccount(MakeConnection.getConnection(), customer), MediaType.APPLICATION_JSON);
+            return CreateStatements.getUserAccount(MakeConnection.getConnection(), customer);//, MediaType.APPLICATION_JSON);
         } catch (Exception e) {
-            return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+            e.printStackTrace();
+            return null; //makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
         }
     }
 
@@ -43,6 +44,7 @@ public class CustomerRestService {
             CreateStatements.createOrder(MakeConnection.getConnection(), order);
             return makeResponse("success", MediaType.TEXT_PLAIN);
         } catch (Exception e) {
+            e.printStackTrace();
             return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
         }
     }

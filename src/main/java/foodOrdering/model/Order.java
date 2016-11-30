@@ -1,24 +1,33 @@
 package foodOrdering.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
 
 public class Order {
+    private int id;
     private int customerId;
     private int restaurantId;
+    private String restaurantName;
     private MenuItem[] foodItems;
     private double totalCost;
+    private Timestamp time;
 
     Order(){
 
     }
 
-    public Order(int customerId, int restaurantId, double totalCost) {
+    public Order(int id, int customerId, int restaurantId, double totalCost) {
+        this.id = id;
         this.customerId = customerId;
         this.restaurantId = restaurantId;
         this.totalCost = totalCost;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCustomerId() {
@@ -51,5 +60,21 @@ public class Order {
 
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 }

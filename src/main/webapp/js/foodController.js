@@ -3,14 +3,14 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
      $scope.currentUser = {};
      $scope.restaurants = [];
      $scope.currentRest = {};
-     $scope.history = [];
+     //$scope.history = [];
 
      $scope.input = {};
      $scope.Login = function(){
          $http.post('http://localhost:8080/foodapp/login',$scope.input)
          .success(function(response){
+            console.log(response)
             if(response){
-                console.log(response)
                 $scope.currentUser = response;
                 $location.url("/search");
             }else{
@@ -19,16 +19,26 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
          });
      }
 
+     $scope.signout = function(){
+          $scope.currentUser = {};
+          $scope.restaurants = [];
+          $scope.currentRest = {};
+          $location.url("/login");
+
+     }
+
      $scope.search = function(filter){
+        if(filter===undefined)
+            filter=""
         console.log("Searching rest "+filter)
         $http.get('http://localhost:8080/foodapp/search?filter='+filter)
          .success(function(response){
-            if(response){
+            if(response.length!=0){
                 console.log(response)
                 $scope.restaurants = response;
                 $location.url("/restlist");
             }else{
-                $scope.searchMessage = "No results found";
+                $scope.searchErrorMessage = "No results found";
             }
          });
 
@@ -60,21 +70,23 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
      $scope.submitOrder = function(){
          order = {}
          order.customerId = $scope.currentUser.id;
+         order.restaurantName = $scope.currentRest.name;
+         order.time = Date.now()
          order.restaurantId = $scope.currentRest.id;
          order.totalCost = $scope.orderTotal;
          order.foodItems = [];
          items = $scope.currentRest.menuItems
          for(i in items){
             if(items[i].quantity!=0)
-                order.foodItems.push({id:items[i].id,cost:items[i].cost,quantity:items[i].quantity})
+                order.foodItems.push({id:items[i].id,name:items[i].name,cost:items[i].cost,quantity:items[i].quantity})
          }
          console.log(order)
          $http.post('http://localhost:8080/foodapp/submit',order)
           .success(function(response){
              if(response==="success"){
                  console.log(response)
-                 $scope.history.push(response);
-                 //$location.url("/history");
+                 $scope.currentUser.history.push(order);
+                 $location.url("/history");
                  $scope.checkoutMessage = "Order successfully placed";
              }else{
                  $scope.checkoutErrorMessage = "Order could not be placed";

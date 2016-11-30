@@ -7,7 +7,7 @@ public class MenuItem {
     private String cuisine;
     private String descr;
     private double cost;
-    private int quantity;
+    private int quantity; //For the order
 
     MenuItem(){
 
@@ -19,6 +19,15 @@ public class MenuItem {
         this.cuisine = cuisine;
         this.cost = cost;
         this.descr = descr;
+    }
+
+    //For the order
+    public MenuItem(int id, String name, String cuisine, int quantity, double cost) {
+        this.id = id;
+        this.name = name;
+        this.cuisine = cuisine;
+        this.cost = cost;
+        this.quantity = quantity;
     }
 
     public int getId() {

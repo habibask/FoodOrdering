@@ -1,0 +1,11 @@
+<div class="panel panel-default" ng-repeat="order in currentUser.history|orderBy:'-time'">
+    <div class="panel-heading"><h3>{{order.restaurantName}} - {{order.totalCost|number:2}}</h3> {{ order.time|date:'MM/dd/yyyy HH:mm'}}</div>
+    <table class="table table-hover table-condensed" style="text-align:center">
+        <thead style="font-weight:bold">
+            <td>Item</td><td>Price</td><td>Quantity</td>
+        </thead>
+        <tr ng-repeat="foodItem in order.foodItems">
+            <td>{{foodItem.name}}</td><td>{{foodItem.cost}}</td><td>{{foodItem.quantity}}</td>
+        </tr>
+    </table>
+</div>

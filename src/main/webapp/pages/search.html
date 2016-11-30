@@ -1,4 +1,5 @@
 <div>
+    <div class="alert alert-warning" ng-show="searchErrorMessage" role="alert">{{searchErrorMessage}}</div>
     <div>
         <div class="input-group">
             <input type="text" class="form-control" ng-model="inputRestaurant" placeholder="Enter Restaurant Name">
@@ -9,5 +10,5 @@
     </div>
 </div>
 <div class="col-sm-2  col-sm-offset-2 ">
-    <a href="">Search all Restaurants</a>
+    <a ng-click="search('')">Search all Restaurants</a>
 </div>

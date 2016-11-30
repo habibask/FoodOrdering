@@ -18,6 +18,12 @@ app.config(['$routeProvider',
         when('/checkout', {
             templateUrl: 'pages/checkout.html'
         }).
+        when('/history', {
+            templateUrl: 'pages/history.html'
+        }).
+        when('/profile', {
+            templateUrl: 'pages/profile.html'
+        }).
         otherwise({
             redirectTo: '/home'
         });

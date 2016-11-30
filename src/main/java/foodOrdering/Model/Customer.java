@@ -10,6 +10,7 @@ public class Customer {
     private String email;
     private String password;
     private String phone;
+    private Order[] history;
 
     Customer(){
 //        super();
@@ -70,5 +71,13 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Order[] getHistory() {
+        return history;
+    }
+
+    public void setHistory(Order[] history) {
+        this.history = history;
     }
 }
