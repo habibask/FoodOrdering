@@ -29,7 +29,7 @@ public class CreateStatements {
             }
 
         } finally {
-            rset.close();
+            //rset.close();
             stmt.close();
         }
 

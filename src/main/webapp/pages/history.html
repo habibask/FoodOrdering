@@ -6,7 +6,7 @@
             <h6>{{ order.time|date:'MM/dd/yyyy HH:mm'}}</h6>
         </div>
         <div  class="dropdown col-sm-3" style="margin-top:30px">
-            <select ng-show="userType=='restaurant'" data-ng-options="status for status in statuses"  ng-change="updateStatus($index)" data-ng-model="order.status"></select>
+            <select ng-show="userType=='restaurant'" data-ng-options="status for status in statuses"  ng-change="updateStatus($index,order.status)" ng-model="order.status"></select>
             <h4 ng-show="userType=='customer'">Status: {{order.status}}</h4>
         </div>
     </div>

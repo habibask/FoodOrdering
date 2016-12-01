@@ -22,6 +22,8 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
             console.log(response)
             if(response){
                 $scope.currentUser = response;
+                if($scope.currentUser.orders===undefined)
+                    $scope.currentUser = []
                 $scope.userType = input.restaurant?'restaurant':'customer'
                 $location.url("/search");
             }else{
@@ -97,7 +99,7 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
              if(response==="success"){
                  console.log(response)
                  $scope.currentUser.orders.push(order);
-                 $location.url("/history");
+                 $location.url("/orders");
                  $scope.checkoutMessage = "Order successfully placed";
              }else{
                  $scope.checkoutErrorMessage = "Order could not be placed";
@@ -105,11 +107,13 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
           });
      }
 
-     $scope.updateStatus = function(idx){
+     $scope.updateStatus = function(idx,status){
         console.log("In updateStatus "+$scope.currentUser.orders[idx].status);
         $http.post('http://localhost:8080/foodapp/updateorder',$scope.currentUser.orders[idx])
          .success(function(response){
             if(response==="success"){
+                console.log("In updateStatus "+$scope.currentUser.orders[idx].status);
+                console.log("status updated")
                 $scope.updateStatus = true;
             }else{
                 $scope.updateStatus = false;
