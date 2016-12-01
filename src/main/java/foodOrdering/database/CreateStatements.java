@@ -328,6 +328,27 @@ public class CreateStatements {
         return null;
     }
 
+    public static MenuItem deleteItem(Connection conn, String rest, MenuItem mi) throws Exception{
+        System.out.println("In addItem" + mi.getCost()+" - "+mi.getName());
+        PreparedStatement stmt1 = conn.prepareStatement("Delete from Menu where restaurantId=? and menuitem=?");
+
+        PreparedStatement stmt2 = conn.prepareStatement("Delete from MenuItem where id = ?", Statement.RETURN_GENERATED_KEYS);
+        try {
+            stmt1.setInt(1,Integer.parseInt(rest));
+            stmt1.setInt(2, mi.getId());
+            System.out.println(stmt1.toString());
+            int success = stmt1.executeUpdate();
+                stmt2.setInt(1, mi.getId());
+                System.out.println(stmt2.toString());
+                success = stmt2.executeUpdate();
+                System.out.println(success);
+        } finally {
+            stmt1.close();
+            stmt2.close();
+        }
+        return null;
+    }
+
     public static void addReview(Connection conn, String rest, Review r) throws Exception{
         System.out.println("In addItem" + r.getCustomerName()+" - "+r.getReview());
         PreparedStatement stmt1 = conn.prepareStatement("Insert into Reviews (ratedby,ratedFor,description, rating) values(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);

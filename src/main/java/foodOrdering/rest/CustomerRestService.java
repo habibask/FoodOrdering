@@ -136,6 +136,21 @@ public class CustomerRestService {
     }
 
     @POST
+    @Path("deleteitem")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response deleteItem(@QueryParam("rest") String rest, MenuItem item) {
+        try {
+            System.out.println("In deleteItem method");
+            CreateStatements.deleteItem(MakeConnection.getConnection(), rest, item);
+            return makeResponse("success", MediaType.TEXT_PLAIN);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+        }
+    }
+
+    @POST
     @Path("addreview")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)

@@ -172,6 +172,19 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
           });
      }
 
+     $scope.deleteItem = function(item, idx){
+         console.log("Deleting an Item")
+         $http.post('http://localhost:8080/foodapp/deleteitem?rest='+$scope.currentUser.id,item)
+           .success(function(response){
+              if(response==="success"){
+                  $scope.currentUser.menuItems.splice(idx, 1);
+                  $scope.updateStatus = "Successful delete";
+              }else{
+                  $scope.updateStatus = "Error deleting";
+              }
+           });
+      }
+
      $scope.add = function(item){
          $http.post('http://localhost:8080/foodapp/additem?rest='+$scope.currentUser.id,item)
            .success(function(response){
@@ -195,7 +208,7 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
            .success(function(response){
               if(response=="success"){
                   console.log(response)
-                  $scope.currentRest.reviews.push(response);
+                  $scope.currentRest.reviews.push(input);
                   $scope.reviewStatus = "Success";
               }else{
                   $scope.reviewStatus = "Error";
