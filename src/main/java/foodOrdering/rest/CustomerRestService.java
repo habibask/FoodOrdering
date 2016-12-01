@@ -29,7 +29,21 @@ public class CustomerRestService {
     public Customer customerRegistration(Customer customer) {
         try {
             System.out.println("In customer registration method");
+            System.out.println(customer.getPassword()+" -- "+customer.getPhone());
             return CreateStatements.registerCustomer(MakeConnection.getConnection(), customer);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @POST
+    @Path("restregister")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Restaurant restaurantRegistration(Restaurant restaurant) {
+        try {
+            return CreateStatements.registerRestaurant(MakeConnection.getConnection(), restaurant);
         } catch (Exception e){
             e.printStackTrace();
             return null;

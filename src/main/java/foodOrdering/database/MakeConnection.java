@@ -19,7 +19,7 @@ public class MakeConnection {
         try{
             System.out.println("Making connection");
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/FoodOrdering", "root", "Pawan5859.");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/FoodOrdering", "root", "Habbu*88");
         } catch (Exception s){
             s.printStackTrace();
             return false;

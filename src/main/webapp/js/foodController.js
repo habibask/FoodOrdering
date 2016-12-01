@@ -11,20 +11,26 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
 
      $scope.Register = function(register){
         var url = ''
-        console.log(register.name)
-        if(register.customer)
-            url = 'http://localhost:8080/foodapp/custregister'
-        else
+        console.log(register)
+        if(register.type=='restaurant')
             url = 'http://localhost:8080/foodapp/restregister'
+        else
+            url = 'http://localhost:8080/foodapp/custregister'
         $http.post(url, register)
         .success(function(response){
             console.log(response)
             if(response){
                  $scope.currentUser = response;
-                 $scope.userType = register.restaurant?'restaurant':'customer'
-                 $location.url("/search");
+                 console.log($scope.currentUser.orders)
+                 if($scope.currentUser.orders===undefined)
+                     $scope.currentUser.orders = []
+                 $scope.userType = register.type=='restaurant'?'restaurant':'customer'
+                 if(register.type=='restaurant')
+                    $location.url("/account")
+                 else
+                    $location.url("/search");
             }else{
-               $scope.message = "User with this email address exists";
+               $scope.message = "Account with this email address exists";
             }
         });
      }
@@ -43,9 +49,12 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
             if(response){
                 $scope.currentUser = response;
                 if($scope.currentUser.orders===undefined)
-                    $scope.currentUser = []
+                    $scope.currentUser.orders = []
                 $scope.userType = input.restaurant?'restaurant':'customer'
-                $location.url("/search");
+                if(input.restaurant)
+                    $location.url("/orders")
+                 else
+                    $location.url("/search");
             }else{
                 $scope.message = "Username/password do not match";
             }
@@ -107,6 +116,7 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
          order.time = Date.now()
          order.restaurantId = $scope.currentRest.id;
          order.totalCost = $scope.orderTotal;
+         order.status = $scope.statuses[0]
          order.foodItems = [];
          items = $scope.currentRest.menuItems
          for(i in items){

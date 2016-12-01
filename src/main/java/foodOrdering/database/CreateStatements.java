@@ -21,8 +21,8 @@ public class CreateStatements {
             stmt.setString(1, customer.getName());
             stmt.setString(2, customer.getAddress());
             stmt.setString(3, customer.getEmail());
-            stmt.setString(3, customer.getPassword());
-            stmt.setString(3, customer.getPhone());
+            stmt.setString(4, customer.getPassword());
+            stmt.setString(5, customer.getPhone());
             System.out.println(stmt.toString());
             int success = stmt.executeUpdate();
             System.out.println("Success in customer registration:" +success);
@@ -33,6 +33,30 @@ public class CreateStatements {
                 int key = rs.getInt(1);
                 customer.setId(key);
                 return customer;
+            }
+        } finally {
+            stmt.close();
+        }
+        return null;
+    }
+
+    public static Restaurant registerRestaurant(Connection conn, Restaurant restaurant) throws Exception{
+        PreparedStatement stmt = conn.prepareStatement("Insert into Restaurant (name,address,email,password,phone) values(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        try {
+            stmt.setString(1, restaurant.getName());
+            stmt.setString(2, restaurant.getAddress());
+            stmt.setString(3, restaurant.getEmail());
+            stmt.setString(4, restaurant.getPassword());
+            stmt.setString(5, restaurant.getPhone());
+            int success = stmt.executeUpdate();
+            System.out.println("Success in restaurant registration:" +success);
+            if (success != 1)
+                return null;
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int key = rs.getInt(1);
+                restaurant.setId(key);
+                return restaurant;
             }
         } finally {
             stmt.close();
