@@ -9,6 +9,26 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
      $scope.statuses = ['Received','Processing', 'Complete']
      $scope.cuisines = ['CHINESE', 'INDIAN', 'THAI', 'ITALIAN', 'MEXICAN' ,'AMERICAN']
 
+     $scope.Register = function(register){
+        var url = ''
+        console.log(register.name)
+        if(register.customer)
+            url = 'http://localhost:8080/foodapp/custregister'
+        else
+            url = 'http://localhost:8080/foodapp/restregister'
+        $http.post(url, register)
+        .success(function(response){
+            console.log(response)
+            if(response){
+                 $scope.currentUser = response;
+                 $scope.userType = register.restaurant?'restaurant':'customer'
+                 $location.url("/search");
+            }else{
+               $scope.message = "User with this email address exists";
+            }
+        });
+     }
+
      $scope.Login = function(input){
          var url = ''
          console.log(input.restaurant)

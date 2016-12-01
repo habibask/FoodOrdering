@@ -4,7 +4,7 @@ app.config(['$routeProvider',
   function ($routeProvider) {
       $routeProvider.
         when('/home', {
-            templateUrl: 'pages/login.html'
+            templateUrl: 'pages/registration.html'
         }).
         when('/search', {
             templateUrl: 'pages/search.html'

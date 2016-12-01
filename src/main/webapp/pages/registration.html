@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<h3>Registration!</h3>
+<div>
+    <div>
+        <label class="sr-only">Name: </label>
+        <input type="text" class="form-control" data-ng-model="register.name" placeholder="Enter Name">
+    </div>
+    <div>
+        <label class="sr-only">Address: </label>
+        <input type="text" class="form-control" data-ng-model="register.address" placeholder="Enter Address">
+
+    </div>
+    <div>
+        <label class="sr-only">Email: </label>
+        <input type="text" class="form-control" data-ng-model="register.email" placeholder="Enter Email">
+
+    </div>
+    <div>
+        <label class="sr-only">Password: </label>
+        <input type="text" class="form-control" data-ng-model="register.password" placeholder="Enter Password">
+
+    </div>
+    <div>
+        <label class="sr-only">Phone: </label>
+        <input type="text" class="form-control" data-ng-model="register.phone" placeholder="Enter Phone">
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="register.restaurant"> Restaurant owner
+        </label>
+        <label>
+            <input type="checkbox" ng-model="register.customer"> Customer
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="Register(register)">Register</button>
+    {{message}}
+</div>

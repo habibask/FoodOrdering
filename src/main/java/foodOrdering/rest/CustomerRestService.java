@@ -7,6 +7,7 @@ import foodOrdering.model.MenuItem;
 import foodOrdering.model.Order;
 import foodOrdering.model.Restaurant;
 import org.json.JSONObject;
+import sun.font.CreatedFontTracker;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -20,6 +21,21 @@ import java.util.Map;
 public class CustomerRestService {
 
     private HashMap<Integer, Restaurant> restMap = null;
+
+    @POST
+    @Path("custregister")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Customer customerRegistration(Customer customer) {
+        try {
+            System.out.println("In customer registration method");
+            return CreateStatements.registerCustomer(MakeConnection.getConnection(), customer);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     @POST
     @Path("custlogin")
