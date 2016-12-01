@@ -18,10 +18,10 @@ create table Restaurant (
 	phone varchar(10) not null
 );
 
-drop table orders;
 
+drop table Orders;
 create table Orders(
-	id int primary key AUTO_INCREMENT,
+	id int primary key ,
     orderedBy int not null,
     foreign key(orderedBy) references Customer(id)
        on update cascade on delete cascade,
@@ -31,6 +31,7 @@ create table Orders(
 	time Timestamp,
 	totalCost double not null
 );
+
 
 create table OrderItem(
 	orderNumber int not null,
@@ -43,6 +44,7 @@ create table OrderItem(
     cost double not null,
     primary key(orderNumber, menuItem)
 );
+
 
 create table Reviews(
 	id int primary key,

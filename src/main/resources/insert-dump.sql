@@ -46,3 +46,5 @@ INSERT into Menu VALUES(1, 5, 20.55);
 INSERT into MENU VALUES(1, 6, 12.00);
 INSERT into Menu VALUES(3, 7, 16.55);
 INSERT into Menu VALUES(4, 8, 14.00);
+
+select * from menuitem;
