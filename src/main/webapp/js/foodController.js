@@ -1,10 +1,12 @@
 app.controller('FoodApplicationController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-
+     $scope.register = {}
+     $scope.register.type="customer"
      $scope.currentUser = {};
      $scope.restaurants = [];
      $scope.currentRest = {};
      $scope.userType;
      //$scope.history = [];
+
 
      $scope.statuses = ['Received','Processing', 'Complete']
      $scope.cuisines = ['CHINESE', 'INDIAN', 'THAI', 'ITALIAN', 'MEXICAN' ,'AMERICAN']
