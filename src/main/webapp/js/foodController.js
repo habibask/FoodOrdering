@@ -184,4 +184,22 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
            });
       }
 
+      $scope.addReview = function(input){
+        input.customerId = $scope.currentUser.id;
+        input.customerName = $scope.currentUser.name;
+        input.rating = parseInt(input.rating)
+        console.log(input)
+        $http.post('http://localhost:8080/foodapp/addreview?rest='+$scope.currentRest.id,input)
+           .success(function(response){
+              if(response=="success"){
+                  console.log(response)
+                  $scope.currentRest.reviews.push(response);
+                  $scope.reviewStatus = "Success";
+              }else{
+                  $scope.reviewStatus = "Error";
+              }
+           });
+
+      }
+
 }]);

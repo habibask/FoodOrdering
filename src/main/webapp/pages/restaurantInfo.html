@@ -1,26 +1,59 @@
 <div>
     <div>
-        <h2 class="col-sm-12">{{currentRest.name}}</h2>
-        <ul class="col-sm-12 list-group">
-           <li ng-repeat="foodItem in currentRest.menuItems" class="row list-group-item">
-                   <div class="col-sm-9">
-                       <div><h4>{{foodItem.name}}</h4></div>
-                       <div><h6>{{foodItem.descr}}</h6></div>
-                   </div>
-                   <div class="col-sm-1">
-                       {{foodItem.cost}}
-                   </div>
-                   <div class="col-sm-2 input-group">
-                       <input type="number" class="form-control" placeholder="{{foodItem.quantity}}" ng-model="inputQ">
+        <div>
+            <h2 class="col-sm-12">{{currentRest.name}}</h2>
+            <ul class="col-sm-12 list-group">
+                <li ng-repeat="foodItem in currentRest.menuItems" class="row list-group-item">
+                    <div class="col-sm-9">
+                        <div><h4>{{foodItem.name}}</h4></div>
+                        <div><h6>{{foodItem.descr}}</h6></div>
+                    </div>
+                    <div class="col-sm-1">
+                        {{foodItem.cost}}
+                    </div>
+                    <div class="col-sm-2 input-group">
+                        <input type="number" class="form-control" placeholder="{{foodItem.quantity}}" ng-model="inputQ">
                        <span class="input-group-btn">
                          <button class="btn btn-default" type="button" ng-click="updateCart($index,inputQ)">Add</button>
                        </span>
-                   </div>
-           </li>
-        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="col-sm-2  col-sm-offset-10 ">
+        <button class="btn btn-default " type="button" ng-click="checkOut()">Check Out</button>
+    </div>
+</div>
+<div>
+    <div class="row alert" role="alert" style="padding-top:20px"><h2>Reviews</h2>
+        <button class="btn btn-default " type="button" ng-click="addreview=true">Add review</button>
     </div>
 
-</div>
-<div class="col-sm-2  col-sm-offset-10 ">
-    <button class="btn btn-default " type="button" ng-click="checkOut()">Check Out</button>
+    <div class="col-lg-12" ng-show="addreview">
+        <div class="col-lg-6 input-group">
+            <div>
+            <span ng-repeat="val in [1,2,3,4,5]" style="margin-right:10px">
+                <input type="radio" name="optradio" ng-model="$parent.input.rating" value="{{val}}"><label style="margin:5px">{{val}}</label>
+            </span>
+            </div>
+            <input type="text" class="form-control" ng-model="input.review" placeholder="Write review...">
+            <button ng-click="addReview(input)" class="btn btn-success" style="margin-bottom:15px;margin-top:10px">
+                <span class="glyphicon glyphicon-ok"></span>
+            </button>
+            {{reviewStatus}}
+        </div>
+    </div>
+
+
+    <div class=" col-sm-5 panel panel-default" ng-repeat="review in currentRest.reviews">
+        <div class="panel-heading">
+            <h3>{{review.customerName}}</h3>
+            <h5>Rating - {{review.rating}}</h5>
+        </div>
+        <div class="panel-body">
+            {{review.review}}
+        </div>
+    </div>
 </div>

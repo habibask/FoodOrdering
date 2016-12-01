@@ -36,3 +36,8 @@ INSERT into MENU VALUES(1, 6, 12.00);
 INSERT into Menu VALUES(3, 7, 16.55);
 INSERT into Menu VALUES(4, 8, 14.00);
 insert into Menu Values(1,8,5.00);
+
+Insert into Reviews values(1,1,1,"This is a good restaurant",3);
+Insert into Reviews values(2,2,1,"This is a great restaurant",4);
+Insert into Reviews values(3,3,1,"I like the food here",5);
+Insert into Reviews values(4,4,1,"Amazing!",4);

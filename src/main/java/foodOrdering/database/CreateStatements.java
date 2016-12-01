@@ -1,9 +1,6 @@
 package foodOrdering.database;
 
-import foodOrdering.model.Customer;
-import foodOrdering.model.MenuItem;
-import foodOrdering.model.Order;
-import foodOrdering.model.Restaurant;
+import foodOrdering.model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -99,6 +96,7 @@ public class CreateStatements {
                 ArrayList<Order> orders = getOrders(conn, rset.getInt(1), "restaurant");
                 c.setOrders(orders.toArray(new Order[orders.size()]));
                 c.setMenuItems(getRestaurantList(conn,rset.getString(2)).get(rset.getInt(1)).getMenuItems());
+                c.setReviews(getReviews(conn,rset.getInt(1)));
                 return c;
             }
 
@@ -108,6 +106,25 @@ public class CreateStatements {
         }
 
         return null;
+    }
+
+    public static ArrayList<Review> getReviews(Connection conn, int restId) throws Exception{
+        ArrayList<Review> reviews = new ArrayList<Review>();
+        PreparedStatement stmt = conn.prepareStatement("select r.rating,r.description,r.ratedBy,c.name from Reviews r, Customer c where c.id = r.ratedBy and ratedFor = ?");
+        System.out.println(stmt.toString());
+        ResultSet rset = null;
+        try {
+            stmt.setInt(1, restId);
+            rset = stmt.executeQuery();
+            while(rset.next()) {
+                Review r = new Review(rset.getInt(1), rset.getString(2), rset.getInt(3), rset.getString(4));
+                reviews.add(r);
+            }
+
+        } finally {
+            stmt.close();
+        }
+        return reviews;
     }
 
     public static ArrayList<Order> getOrders(Connection conn, int id, String table) throws Exception {
@@ -187,6 +204,7 @@ public class CreateStatements {
                     rest = restMap.get(restId);
                 } else {
                     rest = new Restaurant(rset.getInt(10), rset.getString(1), rset.getString(2), rset.getString(3), rset.getString(4));
+                    rest.setReviews(getReviews(conn,rset.getInt(10)));
                     restMap.put(restId, rest);
                 }
                 MenuItem item = new MenuItem(rset.getInt(6), rset.getString(7), rset.getString(5), rset.getString(8), rset.getDouble(9));
@@ -308,5 +326,21 @@ public class CreateStatements {
             stmt2.close();
         }
         return null;
+    }
+
+    public static void addReview(Connection conn, String rest, Review r) throws Exception{
+        System.out.println("In addItem" + r.getCustomerName()+" - "+r.getReview());
+        PreparedStatement stmt1 = conn.prepareStatement("Insert into Reviews (ratedby,ratedFor,description, rating) values(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        try {
+            stmt1.setInt(1, r.getCustomerId());
+            stmt1.setInt(2, Integer.parseInt(rest));
+            stmt1.setString(3, r.getReview());
+            stmt1.setInt(4, r.getRating());
+            System.out.println(stmt1.toString());
+            int success = stmt1.executeUpdate();
+            System.out.println("Successfully added review "+success);
+        } finally {
+            stmt1.close();
+        }
     }
 }

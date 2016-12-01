@@ -15,6 +15,8 @@ public class Restaurant {
     private ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
     private Order[] orders;
 
+    private ArrayList<Review> reviews = new ArrayList<Review>();
+
     Restaurant() {
     }
 
@@ -107,5 +109,13 @@ public class Restaurant {
 
     public void setOrders(Order[] orders) {
         this.orders = orders;
+    }
+
+    public ArrayList<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(ArrayList<Review> reviews) {
+        this.reviews = reviews;
     }
 }

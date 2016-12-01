@@ -46,7 +46,7 @@ create table Reviews(
 
 create table MenuItem(
 	id int primary key AUTO_INCREMENT,
-    name varchar(200) not null,
+    name varchar(200) not null UNIQUE,
     type enum('CHINESE', 'INDIAN', 'THAI', 'ITALIAN', 'MEXICAN' ,'AMERICAN'),
     description varchar(500)
 );

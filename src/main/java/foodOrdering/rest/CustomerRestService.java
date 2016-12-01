@@ -2,10 +2,7 @@ package foodOrdering.rest;
 
 import foodOrdering.database.CreateStatements;
 import foodOrdering.database.MakeConnection;
-import foodOrdering.model.Customer;
-import foodOrdering.model.MenuItem;
-import foodOrdering.model.Order;
-import foodOrdering.model.Restaurant;
+import foodOrdering.model.*;
 import org.json.JSONObject;
 import sun.font.CreatedFontTracker;
 
@@ -138,12 +135,19 @@ public class CustomerRestService {
         }
     }
 
-    @GET
-    @Path("login")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response test() {
-        System.out.println("In test method");
-        return makeResponse("Successful", MediaType.TEXT_PLAIN);
+    @POST
+    @Path("addreview")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response addReview(@QueryParam("rest") String rest, Review item) {
+        try {
+            System.out.println("In addReview method");
+            CreateStatements.addReview(MakeConnection.getConnection(), rest, item);
+            return makeResponse("success", MediaType.TEXT_PLAIN);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+        }
     }
 
     @GET
@@ -155,7 +159,6 @@ public class CustomerRestService {
             restMap = CreateStatements.getRestaurantList(MakeConnection.getConnection(), restName);
             Restaurant[] list = new Restaurant[restMap.size()];
             list = restMap.values().toArray(list);
-            //System.out.println(list[0].getMenuItems()[0].getName());
             return list; //makeResponse(list, MediaType.APPLICATION_JSON);
         } catch (Exception e) {
             e.printStackTrace();
