@@ -155,7 +155,7 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
 
      $scope.editItem = function(item){
         console.log(item)
-        $scope.input = item
+        $scope.menuinput = item
 
      }
 
@@ -164,7 +164,7 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
         $http.post('http://localhost:8080/foodapp/updateitem?rest='+$scope.currentUser.id,item)
           .success(function(response){
              if(response==="success"){
-                 $scope.input = {};
+                 $scope.menuinput = {};
                  $scope.updateStatus = "Successful update";
              }else{
                  $scope.updateStatus = "Error updating";
@@ -175,11 +175,11 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
      $scope.add = function(item){
          $http.post('http://localhost:8080/foodapp/additem?rest='+$scope.currentUser.id,item)
            .success(function(response){
-              if(response!=null){
+              if(response){
                   console.log(response)
+                  $scope.menuinput = {};
                   $scope.currentUser.menuItems.push(response);
                   $scope.updateStatus = "Successful add";
-                  $scope.input = {};
               }else{
                   $scope.updateStatus = "Error adding";
               }

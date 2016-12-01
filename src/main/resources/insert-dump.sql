@@ -22,7 +22,7 @@ INSERT into MenuItem VALUES(1, 'chutney kebab', 2, 'this is a kebab which has gr
 INSERT into MenuItem VALUES(2, 'Cheese Pizza', 4, 'Simple Cheese pizza with no toppings');
 INSERT into MenuItem VALUES(3, 'Burrito', 5, 'Burrito Bowl or a roll');
 INSERT into MenuItem VALUES(4, 'Hamburger', 6, 'this is a kebab which has green chutney in it');
-INSERT into MenuItem VALUES(5, 'chutney kebab', 2, 'this is a kebab which has green chutney in it');
+INSERT into MenuItem VALUES(5, 'chutney kebab2', 2, 'this is a kebab which has green chutney in it');
 INSERT into MenuItem VALUES(6, 'Plain Dosa', 2, 'Plain Dosa served with sambar');
 INSERT into MenuItem VALUES(7, 'Naan Pizza', 2, 'THis is a pizza which is made out of naan bread');
 INSERT into MenuItem VALUES(8, 'Taco', 5, 'This is a taco');
