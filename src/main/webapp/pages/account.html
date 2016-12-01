@@ -1,0 +1,47 @@
+
+
+<div class="panel panel-success" ng-show="userType=='restaurant'">
+    <div class="panel-heading">Restaurant Menu</div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Item name</th>
+            <th>Description</th>
+            <th>Cuisine</th>
+            <th>Cost</th>
+            <th>&nbsp;</th>
+        </tr>
+
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="foodItem in currentUser.menuItems">
+            <td>{{foodItem.name}}</td>
+            <td>{{foodItem.descr}}</td>
+            <td><select data-ng-options="cuisine for cuisine in cuisines" data-ng-model="foodItem.cuisine"></select></td>
+            <td>{{foodItem.cost}}</td>
+            <td>
+                <button ng-click="editItem(foodItem)" class="btn btn-warning">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="text" ng-model="input.name" class="form-control" placeholder="Item name"></td>
+            <td><input type="text" ng-model="input.descr" class="form-control" placeholder="Item descr"></td>
+            <td><select data-ng-options="cuisine for cuisine in cuisines" data-ng-model="input.cuisine"></select></td>
+            <td><input type="number" ng-model="input.cost" class="form-control" placeholder="Item cost"></td>
+            <td>
+                <button ng-click="update(input)" class="btn btn-success">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </button>
+                <button ng-click="add(input)" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+                <h5>{{updateStatus}}</h5>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>

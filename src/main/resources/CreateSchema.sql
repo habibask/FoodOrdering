@@ -1,7 +1,7 @@
 use FoodOrdering;
 
 create table Customer (
-	id int primary key,
+	id int primary key AUTO_INCREMENT,
     name varchar(200) not null,
 	address varchar(500) not null,
 	email varchar(200) not null unique,
@@ -10,7 +10,7 @@ create table Customer (
 );
 
 create table Restaurant (
-	id int primary key,
+	id int primary key AUTO_INCREMENT,
     name varchar(200) not null,
 	address varchar(500) not null,
 	email varchar(200) not null unique,
@@ -18,10 +18,8 @@ create table Restaurant (
 	phone varchar(10) not null
 );
 
-
-drop table Orders;
 create table Orders(
-	id int primary key ,
+	id int primary key AUTO_INCREMENT,
     orderedBy int not null,
     foreign key(orderedBy) references Customer(id)
        on update cascade on delete cascade,
@@ -29,25 +27,13 @@ create table Orders(
     foreign key(orderedFrom) references Restaurant(id)
        on update cascade on delete cascade,
 	time Timestamp,
-	totalCost double not null
-);
-
-
-create table OrderItem(
-	orderNumber int not null,
-    foreign key(orderNumber) references Orders(id)
-       on update cascade on delete cascade,
-	menuItem int not null, 
-    foreign key(menuitem) references MenuItem(id)
-		on update cascade on delete cascade,
-	quantity int not null,
-    cost double not null,
-    primary key(orderNumber, menuItem)
+	totalCost double not null,
+    status enum('Received','Processing','Complete')
 );
 
 
 create table Reviews(
-	id int primary key,
+	id int primary key AUTO_INCREMENT,
     ratedBy int not null,
     foreign key(ratedBy) references Customer(id)
        on update cascade on delete cascade,
@@ -59,7 +45,7 @@ create table Reviews(
 );
 
 create table MenuItem(
-	id int primary key,
+	id int primary key AUTO_INCREMENT,
     name varchar(200) not null,
     type enum('CHINESE', 'INDIAN', 'THAI', 'ITALIAN', 'MEXICAN' ,'AMERICAN'),
     description varchar(500)
@@ -74,4 +60,16 @@ create table Menu(
        on update cascade on delete cascade,
     primary key(restaurantid, menuitem),
     cost double not null
+);
+
+create table OrderItem(
+	orderNumber int not null,
+    foreign key(orderNumber) references Orders(id)
+       on update cascade on delete cascade,
+	menuItem int not null,
+    foreign key(menuitem) references MenuItem(id)
+		on update cascade on delete cascade,
+	quantity int not null,
+    cost double not null,
+    primary key(orderNumber, menuItem)
 );

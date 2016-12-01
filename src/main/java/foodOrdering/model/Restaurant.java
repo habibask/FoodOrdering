@@ -1,21 +1,19 @@
 package foodOrdering.model;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class Restaurant {
     private int id;
     private String name;
     private String address;
     private String email;
-    //private String password;
+    private String password;
     private String phone;
     private HashSet<String> cuisines = new HashSet<String>();
     private String[] cuisineArr;
 
-    private List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
-    private MenuItem[] menuItems;
+    private ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
+    private Order[] orders;
 
     Restaurant() {
     }
@@ -25,7 +23,7 @@ public class Restaurant {
         this.name = name;
         this.address = address;
         this.email = email;
-//        this.password = password;
+        this.password = password;
         this.phone = phone;
     }
 
@@ -83,35 +81,31 @@ public class Restaurant {
         this.cuisineArr = cuisineArr;
     }
 
-    public List<MenuItem> getMenuItemsList() {
-        return menuItemsList;
-    }
-
-    public void setMenuItemsList(ArrayList<MenuItem> menuItemsList) {
-        this.menuItemsList = menuItemsList;
-    }
-
-
-    public void addMenuItem(MenuItem item) {
-        this.menuItemsList.add(item);
-    }
-
-    public MenuItem[] getMenuItems() {
-        menuItems = new MenuItem[menuItemsList.size()];
-        menuItems = menuItemsList.toArray(menuItems);
+    public ArrayList<MenuItem> getMenuItems() {
         return menuItems;
     }
 
-    public void setMenuItems(MenuItem[] menuItems) {
+    public void setMenuItems(ArrayList<MenuItem> menuItems) {
         this.menuItems = menuItems;
     }
 
-    //    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
+    public void addMenuItem(MenuItem item) {
+        this.menuItems.add(item);
+    }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Order[] getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Order[] orders) {
+        this.orders = orders;
+    }
 }
