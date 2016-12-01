@@ -14,6 +14,33 @@ import java.util.HashMap;
 
 public class CreateStatements {
 
+    public static Customer registerCustomer(Connection conn, Customer customer) throws Exception{
+        System.out.println("In customer registration: " + customer.getName()+" - "+customer.getEmail());
+        PreparedStatement stmt = conn.prepareStatement("Insert into Customer (name,address,email,password,phone) values(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        try {
+            stmt.setString(1, customer.getName());
+            stmt.setString(2, customer.getAddress());
+            stmt.setString(3, customer.getEmail());
+            stmt.setString(3, customer.getPassword());
+            stmt.setString(3, customer.getPhone());
+            System.out.println(stmt.toString());
+            int success = stmt.executeUpdate();
+            System.out.println("Success in customer registration:" +success);
+            if (success != 1)
+                return null;
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int key = rs.getInt(1);
+                customer.setId(key);
+                return customer;
+            }
+        } finally {
+            stmt.close();
+        }
+        return null;
+    }
+
+
     public static Customer getCustomerAccount(Connection conn, Customer customerToCheck) throws Exception {
         PreparedStatement stmt = conn.prepareStatement("select id,name,address,email,phone from Customer where email=? and password=?");
         ResultSet rset = null;
