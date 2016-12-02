@@ -1,15 +1,17 @@
-<div>
-    <div class="alert alert-warning" ng-show="searchErrorMessage" role="alert">{{searchErrorMessage}}</div>
-    <div>
-        <div class="input-group">
-            <input type="text" class="form-control" ng-model="inputRestaurant" placeholder="Enter Restaurant Name">
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <div class="alert alert-warning" ng-show="searchErrorMessage" role="alert">{{searchErrorMessage}}</div>
+        <div>
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="inputRestaurant" placeholder="Enter Restaurant Name">
             <span class="input-group-btn">
         <button class="btn btn-default" type="button" ng-click="search(inputRestaurant)">Search!</button>
       </span>
+            </div>
         </div>
     </div>
 </div>
-<div class="col-sm-2  col-sm-offset-2" >
+<div class="col-sm-offset-4">
 
-    <a ng-click="search('')" style="cursor:pointer;">Search all Restaurant </a>
+    <a ng-click="search('')" style="cursor:pointer;">Search all Restaurants </a>
 </div>

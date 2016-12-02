@@ -39,7 +39,7 @@
             </span>
             </div>
             <input type="text" class="form-control" ng-model="input.review" placeholder="Write review...">
-            <button ng-click="addReview(input)" class="btn btn-success" style="margin-bottom:15px;margin-top:10px">
+            <button ng-click="addReview(input);input={};reviewStatus='';addreview=false;" class="btn btn-success" style="margin-bottom:15px;margin-top:10px">
                 <span class="glyphicon glyphicon-ok"></span>
             </button>
             {{reviewStatus}}
@@ -47,7 +47,7 @@
     </div>
 
 
-    <div class=" col-sm-5 panel panel-default" ng-repeat="review in currentRest.reviews">
+    <div class=" col-sm-5 panel panel-default review" ng-repeat="review in currentRest.reviews" style="margin:10px;">
         <div class="panel-heading">
             <h3>{{review.customerName}}</h3>
             <h5>Rating - {{review.rating}}</h5>
