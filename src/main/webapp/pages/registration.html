@@ -1,34 +1,42 @@
-<h3>Registration!</h3>
-<div>
-    <div>
-        <label class="sr-only">Name: </label>
-        <input type="text" class="form-control" data-ng-model="register.name" placeholder="Enter Name">
-    </div>
-    <div>
-        <label class="sr-only">Address: </label>
-        <input type="text" class="form-control" data-ng-model="register.address" placeholder="Enter Address">
+<div class="col-sm-4 col-sm-offset-3">
+    <form class="form-signin">
+        <label>    <h3>Registration!</h3>
+        </label>
+        <div class="alert alert-danger" ng-show="message" role="alert">{{message}}</div>
+        <div>
+            <label class="sr-only">Name: </label>
+            <input type="text" class="form-control" data-ng-model="register.name" placeholder="Enter Name">
+        </div>
+        <div>
+            <label class="sr-only">Address: </label>
+            <input type="text" class="form-control" data-ng-model="register.address" placeholder="Enter Address">
 
-    </div>
-    <div>
-        <label class="sr-only">Email: </label>
-        <input type="email" class="form-control" ng-model="register.email" placeholder="Enter Email" required autofocus>
+        </div>
+        <div>
+            <label class="sr-only">Email: </label>
+            <input type="email" class="form-control" ng-model="register.email" placeholder="Enter Email" required
+                   autofocus>
 
-    </div>
-    <div>
-        <label class="sr-only">Password: </label>
-        <input type="password" class="form-control" data-ng-model="register.password" placeholder="Enter Password">
+        </div>
+        <div>
+            <label class="sr-only">Password: </label>
+            <input type="password" class="form-control" data-ng-model="register.password" placeholder="Enter Password">
 
-    </div>
-    <div>
-        <label class="sr-only">Phone: </label>
-        <input type="text" class="form-control" data-ng-model="register.phone" placeholder="Enter Phone">
-    </div>
-    <div class="radio">
-        <label><input type="radio" name="optradio" ng-model="register.type" value="restaurant" >Restaurant owner</label>
-    </div>
-    <div class="radio">
-        <label><input type="radio" name="optradio" ng-model="register.type" value="customer" checked="true"> Customer</label>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="Register(register)">Register</button>
-    {{message}}
+        </div>
+        <div>
+            <label class="sr-only">Phone: </label>
+            <input type="text" class="form-control" data-ng-model="register.phone" placeholder="Enter Phone">
+        </div>
+        <div class="radio">
+            <label><input type="radio" name="optradio" ng-model="register.type" value="restaurant">Restaurant
+                owner</label>
+        </div>
+        <div class="radio">
+            <label><input type="radio" name="optradio" ng-model="register.type" value="customer" checked="true">
+                Customer</label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="Register(register)">Register</button>
+        <a href="#/login">Just Signin >></a>
+
+    </form>
 </div>

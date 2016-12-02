@@ -1,3 +1,5 @@
+
+<div class="alert alert-warning" ng-hide="currentUser.orders.length>0" role="alert">There are no orders for this restaurant</div>
 <div class="panel panel-default" ng-repeat="order in currentUser.orders|orderBy:'-time'">
     <div class="">
         <div class="col-sm-9">

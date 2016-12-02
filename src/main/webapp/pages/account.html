@@ -1,50 +1,94 @@
-
-
-<div class="panel panel-success" ng-show="userType=='restaurant'">
-    <div class="panel-heading">Restaurant Menu</div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Item name</th>
-            <th>Description</th>
-            <th>Cuisine</th>
-            <th>Cost</th>
-            <th>&nbsp;</th>
-        </tr>
-
-        </thead>
-        <tbody>
-
-        <tr ng-repeat="foodItem in currentUser.menuItems" ng-if="foodItem">
-            <td>{{foodItem.name}}</td>
-            <td>{{foodItem.descr}}</td>
-            <td><select data-ng-options="cuisine for cuisine in cuisines" data-ng-model="foodItem.cuisine"></select></td>
-            <td>{{foodItem.cost}}</td>
-            <td>
-                <button ng-click="editItem(foodItem)" class="btn btn-warning">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </button>
-                <button ng-click="deleteItem(foodItem, $index)" class="btn btn-danger">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td><input type="text" ng-model="menuinput.name" class="form-control" placeholder="Item name"></td>
-            <td><input type="text" ng-model="menuinput.descr" class="form-control" placeholder="Item descr"></td>
-            <td><select data-ng-options="cuisine for cuisine in cuisines" data-ng-model="menuinput.cuisine"></select></td>
-            <td><input type="number" ng-model="menuinput.cost" class="form-control" placeholder="Item cost"></td>
-            <td>
-                <button ng-click="update(menuinput)" class="btn btn-success">
-                    <span class="glyphicon glyphicon-ok"></span>
-                </button>
-                <button ng-click="add(menuinput)" class="btn btn-danger">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
-                <h5>{{updateStatus}}</h5>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div class="row panel panel-success">
+    <div class="panel-heading">Profile Information
+        <button class="btn btn-sm btn-danger col-sm-offset-4" type="submit" ng-click="deleteUser(currentUser)">
+            Delete Account
+        </button>
+    </div>
+    <form class="col-sm-6 form-signin">
+        </label>
+        <div class="alert alert-danger" ng-show="updatemessage" role="alert">{{updatemessage}}</div>
+        <div class="input-group">
+            <span class="input-group-addon">Name</span>
+            <input type="text" class="form-control" placeholder="Name" aria-describedby="basic-addon1"
+                   ng-model="currentUser.name">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Address</span>
+            <input type="text" class="form-control" placeholder="Address" aria-describedby="basic-addon1"
+                   ng-model="currentUser.address">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Email</span>
+            <input type="email" class="form-control" placeholder="Email" aria-describedby="basic-addon1"
+                   ng-model="currentUser.email">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Password</span>
+            <input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon1"
+                   ng-model="currentUser.password">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Phone</span>
+            <input type="text" class="form-control" placeholder="Phone" aria-describedby="basic-addon1"
+                   ng-model="currentUser.phone">
+        </div>
+        <div>
+            <button class="btn btn-sm btn-primary col-sm-offset-4" type="submit" ng-click="updateInfo(currentUser)">
+                Update
+            </button>
+        </div>
+    </form>
 </div>
+
+<div class="row">
+    <div class="row panel panel-success" ng-show="userType=='restaurant'">
+        <div class="panel-heading">Restaurant Menu</div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Item name</th>
+                <th>Description</th>
+                <th>Cuisine</th>
+                <th>Cost</th>
+                <th>&nbsp;</th>
+            </tr>
+
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="foodItem in currentUser.menuItems" ng-if="foodItem">
+                <td>{{foodItem.name}}</td>
+                <td>{{foodItem.descr}}</td>
+                <td><select data-ng-options="cuisine for cuisine in cuisines" data-ng-model="foodItem.cuisine"></select>
+                </td>
+                <td>{{foodItem.cost}}</td>
+                <td>
+                    <button ng-click="editItem(foodItem)" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                    <button ng-click="deleteItem(foodItem, $index)" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text" ng-model="menuinput.name" class="form-control" placeholder="Item name"></td>
+                <td><input type="text" ng-model="menuinput.descr" class="form-control" placeholder="Item descr"></td>
+                <td><select data-ng-options="cuisine for cuisine in cuisines"
+                            data-ng-model="menuinput.cuisine"></select>
+                </td>
+                <td><input type="number" ng-model="menuinput.cost" class="form-control" placeholder="Item cost"></td>
+                <td>
+                    <button ng-click="update(menuinput)" class="btn btn-success">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    <button ng-click="add(menuinput)" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <h5>{{updateStatus}}</h5>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

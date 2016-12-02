@@ -77,6 +77,36 @@ public class CustomerRestService {
     }
 
     @POST
+    @Path("custupdate")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response custUpdate(Customer customer) {
+        try {
+            System.out.println("In restUpdate method");
+            CreateStatements.updateCustomerAccount(MakeConnection.getConnection(), customer);//, MediaType.APPLICATION_JSON);
+            return makeResponse("success", MediaType.TEXT_PLAIN);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+        }
+    }
+
+    @POST
+    @Path("restupdate")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response restUpdate(Restaurant restaurant) {
+        try {
+            System.out.println("In restUpdate method");
+            CreateStatements.updateRestaurantAccount(MakeConnection.getConnection(), restaurant);//, MediaType.APPLICATION_JSON);
+            return makeResponse("success", MediaType.TEXT_PLAIN);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+        }
+    }
+
+    @POST
     @Path("submit")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
@@ -186,6 +216,36 @@ public class CustomerRestService {
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .build();
+    }
+
+    @POST
+    @Path("custdelete")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response custDelete(Customer customer) {
+        try {
+            System.out.println("In custDelete method");
+            CreateStatements.deleteCustomerAccount(MakeConnection.getConnection(), customer);//, MediaType.APPLICATION_JSON);
+            return makeResponse("success", MediaType.TEXT_PLAIN);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+        }
+    }
+
+    @POST
+    @Path("restdelete")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response restDelete(Restaurant restaurant) {
+        try {
+            System.out.println("In restDelete method");
+            CreateStatements.deleteRestaurantAccount(MakeConnection.getConnection(), restaurant);//, MediaType.APPLICATION_JSON);
+            return makeResponse("success", MediaType.TEXT_PLAIN);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return makeResponse(e.getCause(), MediaType.TEXT_PLAIN);
+        }
     }
 
 

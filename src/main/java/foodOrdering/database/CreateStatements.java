@@ -11,8 +11,8 @@ import java.util.HashMap;
 
 public class CreateStatements {
 
-    public static Customer registerCustomer(Connection conn, Customer customer) throws Exception{
-        System.out.println("In customer registration: " + customer.getName()+" - "+customer.getEmail());
+    public static Customer registerCustomer(Connection conn, Customer customer) throws Exception {
+        System.out.println("In customer registration: " + customer.getName() + " - " + customer.getEmail());
         PreparedStatement stmt = conn.prepareStatement("Insert into Customer (name,address,email,password,phone) values(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         try {
             stmt.setString(1, customer.getName());
@@ -22,7 +22,7 @@ public class CreateStatements {
             stmt.setString(5, customer.getPhone());
             System.out.println(stmt.toString());
             int success = stmt.executeUpdate();
-            System.out.println("Success in customer registration:" +success);
+            System.out.println("Success in customer registration:" + success);
             if (success != 1)
                 return null;
             ResultSet rs = stmt.getGeneratedKeys();
@@ -37,7 +37,7 @@ public class CreateStatements {
         return null;
     }
 
-    public static Restaurant registerRestaurant(Connection conn, Restaurant restaurant) throws Exception{
+    public static Restaurant registerRestaurant(Connection conn, Restaurant restaurant) throws Exception {
         PreparedStatement stmt = conn.prepareStatement("Insert into Restaurant (name,address,email,password,phone) values(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         try {
             stmt.setString(1, restaurant.getName());
@@ -46,7 +46,7 @@ public class CreateStatements {
             stmt.setString(4, restaurant.getPassword());
             stmt.setString(5, restaurant.getPhone());
             int success = stmt.executeUpdate();
-            System.out.println("Success in restaurant registration:" +success);
+            System.out.println("Success in restaurant registration:" + success);
             if (success != 1)
                 return null;
             ResultSet rs = stmt.getGeneratedKeys();
@@ -61,6 +61,68 @@ public class CreateStatements {
         return null;
     }
 
+
+    public static void updateCustomerAccount(Connection conn, Customer customer) throws Exception {
+        System.out.println("In customer update: " + customer.getName() + " - " + customer.getEmail());
+        PreparedStatement stmt = conn.prepareStatement("Update Customer set name=?, address=? , email=?,password=?,phone=? where id=?");
+        try {
+            stmt.setString(1, customer.getName());
+            stmt.setString(2, customer.getAddress());
+            stmt.setString(3, customer.getEmail());
+            stmt.setString(4, customer.getPassword());
+            stmt.setString(5, customer.getPhone());
+            stmt.setInt(6, customer.getId());
+            System.out.println(stmt.toString());
+            int success = stmt.executeUpdate();
+            System.out.println("Success in customer update:" + success);
+        } finally {
+            stmt.close();
+        }
+    }
+
+    public static void updateRestaurantAccount(Connection conn, Restaurant rest) throws Exception {
+        System.out.println("In Restaurant update: " + rest.getName() + " - " + rest.getEmail());
+        PreparedStatement stmt = conn.prepareStatement("Update Restaurant set name=?, address=? , email=?,password=?,phone=? where id=?");
+        try {
+            stmt.setString(1, rest.getName());
+            stmt.setString(2, rest.getAddress());
+            stmt.setString(3, rest.getEmail());
+            stmt.setString(4, rest.getPassword());
+            stmt.setString(5, rest.getPhone());
+            stmt.setInt(6, rest.getId());
+            System.out.println(stmt.toString());
+            int success = stmt.executeUpdate();
+            System.out.println("Success in restaurant update:" + success);
+        } finally {
+            stmt.close();
+        }
+    }
+
+    public static void deleteCustomerAccount(Connection conn, Customer customer) throws Exception {
+        System.out.println("In customer update: " + customer.getName() + " - " + customer.getEmail());
+        PreparedStatement stmt = conn.prepareStatement("Delete from Customer where id=?");
+        try {
+            stmt.setInt(1, customer.getId());
+            System.out.println(stmt.toString());
+            int success = stmt.executeUpdate();
+            System.out.println("Success in customer delete:" + success);
+        } finally {
+            stmt.close();
+        }
+    }
+
+    public static void deleteRestaurantAccount(Connection conn, Restaurant rest) throws Exception {
+        System.out.println("In Restaurant update: " + rest.getName() + " - " + rest.getEmail());
+        PreparedStatement stmt = conn.prepareStatement("Delete from Restaurant where id=?");
+        try {
+            stmt.setInt(1, rest.getId());
+            System.out.println(stmt.toString());
+            int success = stmt.executeUpdate();
+            System.out.println("Success in restaurant delete:" + success);
+        } finally {
+            stmt.close();
+        }
+    }
 
     public static Customer getCustomerAccount(Connection conn, Customer customerToCheck) throws Exception {
         PreparedStatement stmt = conn.prepareStatement("select id,name,address,email,phone from Customer where email=? and password=?");
@@ -85,7 +147,7 @@ public class CreateStatements {
     }
 
     public static Restaurant getRestaurantAccount(Connection conn, Customer customerToCheck) throws Exception {
-        PreparedStatement stmt = conn.prepareStatement("select id,name,address,email,password,phone,id from Restaurant where email=? and password=?");
+        PreparedStatement stmt = conn.prepareStatement("select id,name,address,email,phone from Restaurant where email=? and password=?");
         ResultSet rset = null;
         try {
             stmt.setString(1, customerToCheck.getEmail());
@@ -95,8 +157,8 @@ public class CreateStatements {
                 Restaurant c = new Restaurant(rset.getInt(1), rset.getString(2), rset.getString(3), rset.getString(4), rset.getString(5));
                 ArrayList<Order> orders = getOrders(conn, rset.getInt(1), "restaurant");
                 c.setOrders(orders.toArray(new Order[orders.size()]));
-                c.setMenuItems(getRestaurantList(conn,rset.getString(2)).get(rset.getInt(1)).getMenuItems());
-                c.setReviews(getReviews(conn,rset.getInt(1)));
+                c.setMenuItems(getRestaurantList(conn, rset.getString(2)).get(rset.getInt(1)).getMenuItems());
+                c.setReviews(getReviews(conn, rset.getInt(1)));
                 return c;
             }
 
@@ -108,7 +170,7 @@ public class CreateStatements {
         return null;
     }
 
-    public static ArrayList<Review> getReviews(Connection conn, int restId) throws Exception{
+    public static ArrayList<Review> getReviews(Connection conn, int restId) throws Exception {
         ArrayList<Review> reviews = new ArrayList<Review>();
         PreparedStatement stmt = conn.prepareStatement("select r.rating,r.description,r.ratedBy,c.name from Reviews r, Customer c where c.id = r.ratedBy and ratedFor = ?");
         System.out.println(stmt.toString());
@@ -116,7 +178,7 @@ public class CreateStatements {
         try {
             stmt.setInt(1, restId);
             rset = stmt.executeQuery();
-            while(rset.next()) {
+            while (rset.next()) {
                 Review r = new Review(rset.getInt(1), rset.getString(2), rset.getInt(3), rset.getString(4));
                 reviews.add(r);
             }
@@ -204,7 +266,7 @@ public class CreateStatements {
                     rest = restMap.get(restId);
                 } else {
                     rest = new Restaurant(rset.getInt(10), rset.getString(1), rset.getString(2), rset.getString(3), rset.getString(4));
-                    rest.setReviews(getReviews(conn,rset.getInt(10)));
+                    rest.setReviews(getReviews(conn, rset.getInt(10)));
                     restMap.put(restId, rest);
                 }
                 MenuItem item = new MenuItem(rset.getInt(6), rset.getString(7), rset.getString(5), rset.getString(8), rset.getDouble(9));
@@ -274,8 +336,8 @@ public class CreateStatements {
         }
     }
 
-    public static void updateItem(Connection conn, String rest, MenuItem mi) throws Exception{
-        System.out.println("In updateItem" + mi.getCost()+" - "+mi.getName());
+    public static void updateItem(Connection conn, String rest, MenuItem mi) throws Exception {
+        System.out.println("In updateItem" + mi.getCost() + " - " + mi.getName());
         PreparedStatement stmt1 = conn.prepareStatement("update MenuItem set name = ?, type=?, description=? where id = ?");
         PreparedStatement stmt2 = conn.prepareStatement("update Menu set cost = ? where restaurantId = ? and menuitem = ?");
         try {
@@ -286,8 +348,8 @@ public class CreateStatements {
             System.out.println(stmt1.toString());
             int success = stmt1.executeUpdate();
             System.out.println(success);
-            stmt2.setDouble(1,mi.getCost());
-            stmt2.setInt(2,Integer.parseInt(rest));
+            stmt2.setDouble(1, mi.getCost());
+            stmt2.setInt(2, Integer.parseInt(rest));
             stmt2.setInt(3, mi.getId());
             System.out.println(stmt2.toString());
             success = stmt2.executeUpdate();
@@ -298,8 +360,8 @@ public class CreateStatements {
         }
     }
 
-    public static MenuItem addItem(Connection conn, String rest, MenuItem mi) throws Exception{
-        System.out.println("In addItem" + mi.getCost()+" - "+mi.getName());
+    public static MenuItem addItem(Connection conn, String rest, MenuItem mi) throws Exception {
+        System.out.println("In addItem" + mi.getCost() + " - " + mi.getName());
         PreparedStatement stmt1 = conn.prepareStatement("Insert into MenuItem (name,type,description) values(?,?,?)", Statement.RETURN_GENERATED_KEYS);
         PreparedStatement stmt2 = conn.prepareStatement("Insert into Menu (cost, restaurantId, menuitem) values(?,?,?)");
         try {
@@ -328,20 +390,20 @@ public class CreateStatements {
         return null;
     }
 
-    public static MenuItem deleteItem(Connection conn, String rest, MenuItem mi) throws Exception{
-        System.out.println("In addItem" + mi.getCost()+" - "+mi.getName());
+    public static MenuItem deleteItem(Connection conn, String rest, MenuItem mi) throws Exception {
+        System.out.println("In addItem" + mi.getCost() + " - " + mi.getName());
         PreparedStatement stmt1 = conn.prepareStatement("Delete from Menu where restaurantId=? and menuitem=?");
 
         PreparedStatement stmt2 = conn.prepareStatement("Delete from MenuItem where id = ?", Statement.RETURN_GENERATED_KEYS);
         try {
-            stmt1.setInt(1,Integer.parseInt(rest));
+            stmt1.setInt(1, Integer.parseInt(rest));
             stmt1.setInt(2, mi.getId());
             System.out.println(stmt1.toString());
             int success = stmt1.executeUpdate();
-                stmt2.setInt(1, mi.getId());
-                System.out.println(stmt2.toString());
-                success = stmt2.executeUpdate();
-                System.out.println(success);
+            stmt2.setInt(1, mi.getId());
+            System.out.println(stmt2.toString());
+            success = stmt2.executeUpdate();
+            System.out.println(success);
         } finally {
             stmt1.close();
             stmt2.close();
@@ -349,8 +411,8 @@ public class CreateStatements {
         return null;
     }
 
-    public static void addReview(Connection conn, String rest, Review r) throws Exception{
-        System.out.println("In addItem" + r.getCustomerName()+" - "+r.getReview());
+    public static void addReview(Connection conn, String rest, Review r) throws Exception {
+        System.out.println("In addItem" + r.getCustomerName() + " - " + r.getReview());
         PreparedStatement stmt1 = conn.prepareStatement("Insert into Reviews (ratedby,ratedFor,description, rating) values(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         try {
             stmt1.setInt(1, r.getCustomerId());
@@ -359,7 +421,7 @@ public class CreateStatements {
             stmt1.setInt(4, r.getRating());
             System.out.println(stmt1.toString());
             int success = stmt1.executeUpdate();
-            System.out.println("Successfully added review "+success);
+            System.out.println("Successfully added review " + success);
         } finally {
             stmt1.close();
         }

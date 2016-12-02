@@ -58,10 +58,28 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
                  else
                     $location.url("/search");
             }else{
-                $scope.message = "Username/password do not match";
+                $scope.loginmessage = "Username/password do not match";
             }
          });
      }
+
+     $scope.updateInfo = function(currentUser){
+         var url = ''
+         console.log(currentUser)
+         if($scope.userType=='restaurant')
+             url = 'http://localhost:8080/foodapp/restupdate'
+         else
+             url = 'http://localhost:8080/foodapp/custupdate'
+         $http.post(url, currentUser)
+         .success(function(response){
+             console.log(response)
+             if(response=="success"){
+                $scope.updatemessage = "Updated details";
+             }else{
+                $scope.updatemessage = "Update failed";
+             }
+         });
+      }
 
      $scope.signout = function(){
           $scope.currentUser = {};
@@ -216,5 +234,24 @@ app.controller('FoodApplicationController', ['$scope', '$http', '$location', fun
            });
 
       }
+
+      $scope.deleteUser = function(currentUser){
+           var url = ''
+           console.log(currentUser)
+           if($scope.userType=='restaurant')
+               url = 'http://localhost:8080/foodapp/restdelete'
+           else
+               url = 'http://localhost:8080/foodapp/custdelete'
+           $http.post(url, currentUser)
+           .success(function(response){
+               console.log(response)
+               if(response=="success"){
+                    console.log(response)
+                    $scope.signout();
+               }else{
+                  $scope.updatemessage = "Delete failed";
+               }
+           });
+        }
 
 }]);

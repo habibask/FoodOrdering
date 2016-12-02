@@ -26,8 +26,8 @@
     <div class="row" ng-controller="FoodApplicationController">
         <!--<div ng-show="currentUser.name!=null" class="col-sm-2 col-sm-offset-10">Welcome {{currentUser.name}}</div>-->
         <ul ng-show="currentUser.name!=null" class="col-sm-10 col-sm-offset-1 nav nav-pills">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#/orders">History</a></li>
+            <li role="presentation" class="active"><a href="#/search">Home</a></li>
+            <li role="presentation"><a href="#/orders">Orders</a></li>
             <li role="presentation"><a href="#/account">Account</a></li>
             <li role="presentation"><a ng-click="signout()">SignOut</a></li>
             <li role="presentation" class="pull-right"><h4>Welcome {{currentUser.name}}</h4></li>

@@ -60,3 +60,7 @@ h4,h6{
   font-size:1.25em;
   cursor: pointer;
 }
+
+.input-group{
+    margin:10px;
+}
